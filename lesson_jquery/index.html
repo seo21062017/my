@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!--    <script src="ajax.js"></script>-->
+    <style>
+        .div_1 {
+            background-color: #651165;
+        }
+        .div_2 {
+            background-color: #143335;
+        }
+
+
+
+        #addBlock {
+            width: 100px;
+            height: 50px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+
+        .block {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+<!--<div id="test">test</div>-->
+
+<div id="comments">
+    <p>Коментарий №1</p>
+    <p>Коментарий №2</p>
+    <p>Коментарий №3</p>
+</div>
+
+<form name="form" id="form" action="#" method="post" style="display: none;" onsubmit="return false">
+    <textarea name="comment" id="textarea" cols="20" rows="20" ></textarea>
+    <input type="submit" value="Добавить коментарий" id="done" name="send">
+</form>
+
+<a href="#" onclick="return false" id="add_comment">Добавить коментарий</a>
+<hr>
+
+<a href="#" id="hide"  onclick="return false">Скрыть комментарий</a>
+<a href="#" style="display: none;" id="show" onclick="return false">Показать комментарий</a>
+<hr>
+<div id="test">
+    <img src="https://avatars.mds.yandex.net/get-zen_doc/169683/pub_5c29efc7561f7a00aa62abdc_5c29f20b48312b00a997e03c/scale_1200" alt="Изображение" title="Изображение" width="200" id="img">
+</div>
+<hr>
+<button id="addBlock">Добавить блок</button>
+<div id="blocks"></div>
+
+
+<script type="text/javascript">
+
+
+ $(document).ready(()=>{
+    $('#addBlock').click(()=>{
+        let  randName = GetNumber(1, 700);
+        $('#blocks').prepend("<div class='block " + randName + "'>" + randName + "</div>");
+
+       $('.' + randName).css("background", "#" + GetNumber(0, 9)+ GetNumber(0, 9)+ GetNumber(0, 9)+ GetNumber(0, 9)+ GetNumber(0, 9)+ GetNumber(0, 9));
+//         $('.' + randName).css("background", "#377577");
+
+    });
+
+
+     // $('#addBlock').click(()=>{
+     //     $('#blocks').prepend("<div class='block'>" + GetNumber(1, 10) + "</div>");
+     // });
+
+
+     function GetNumber(min, max) {
+         return Math.floor(Math.random() * (max - min + 1) )+ min;
+     }
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).ready(()=> {
+    $('#img').bind("click", (event) => {
+        $(event.target).parent().css("text-align", "center");
+        $(event.target).animate({
+            width: $(event.target).width() * 2,
+            height: $(event.target).height() * 2
+        }, 3000);
+    });
+});
+
+
+$(document).ready(()=>{
+    $(document).on("click", "#add_comment", ()=>{
+        let form = $("form[name='form']");
+        form.css("display", "block");
+        $("#add_comment").replaceWith(form);
+    });
+
+    $(document).on("click", "input[name='send']", ()=>{
+        let comment = $("textarea[name='comment']").val();
+        // alert("подождите идет загрузка коментариев");
+        // alert(comment);
+        $('<p>' + comment + '</p>').appendTo("#comments");
+        // $('#test').append('<p>' + comment + '</p>');
+    });
+
+});
+
+function hideComment() {
+    $('#comments').fadeOut(1000, ()=>{
+        $('#hide').hide();
+        $('#show').show();
+    });
+}
+
+function showComment() {
+    $('#comments').fadeIn(1000, ()=>{
+        $('#hide').show();
+        $('#show').hide();
+    });
+}
+
+$(document).ready(()=>{
+    $("#hide").bind("click", hideComment);
+    $("#show").bind("click", showComment);
+});
+
+
+
+
+//$('<div>fgbfgbfgbbgfgb</div>').appendTo("#test");
+
+</script>
+</body>
+</html>

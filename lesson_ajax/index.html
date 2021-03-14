@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        function funcBefore(){
+            $('#information').text("Ожидание данных..........");
+        }
+
+        function funcSuccess(Data){
+            $('#information').text(Data);
+        }
+
+
+        $(document).ready(()=>{
+            $("#load").bind("click", ()=>{
+                let admin = "admin";
+                $.ajax({
+                    url: "content.php",
+                    type: "POST",
+                    data: ({
+                        name: admin,
+                        number: 5,
+                    }),
+                    dataType: "html",
+                    beforeSend: funcBefore,
+                    success: funcSuccess
+                });
+            });
+
+            $("#done").bind("click", ()=>{
+                $.ajax({
+                    url: "check.php",
+                    type: "POST",
+                    data: ({
+                        name: $('#name').val()
+
+                    }),
+                    dataType: "html",
+                    beforeSend: function (){
+                        $('#information').text("Ожидание данных..........");
+                    },
+                    success: function (data) {
+                        if(data == "Fail"){
+                            alert("Имя занято");
+                        }else {
+                            $('#information').text(data);
+                        }
+                    }
+                });
+            });
+
+        });
+
+
+
+    $(document).ready(()=>{
+        $('select[name="country"]').bind("change", ()=>{
+            $('select[name="city"]').empty();
+            $.get("countryCheck.php", {
+                country: $('select[name="country"]').val()
+            },
+                (data)=>{
+                    data = JSON.parse(data);
+
+                    for (let id in data){
+                        $('select[name="city"]').append($("<option value='" + id + "'>" + data[id] + "</option>"))
+                    }
+                }
+            );
+        });
+    });
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+</head>
+<body>
+<br>
+<br>
+<lable>Укажите страну</lable>
+<select name="country" >
+    <option value="0" selected="selected">Выберите страну</option>
+    <option value="1">Америка</option>
+    <option value="2">Франция</option>
+</select>
+
+<lable>Укажите город</lable>
+<select name="city" >
+    <option value="0" selected>Выберите город</option>
+
+</select>
+<br>
+<br>
+<hr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<input type="text" id="name" placeholder="Введите имя">
+<input type="button" id="done" value="Готово" placeholder="Введите имя">
+<p id="load" style="cursor: pointer">Загрузить данные</p>
+<div id="information"></div>
+
+</body>
+</html>
